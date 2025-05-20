@@ -195,7 +195,12 @@ else
     print_red "❌ No se encontró la carpeta $ruta/Wallpapers"
 fi
 
+print_green "Añadir fzf"
 
+if [ -d "$ruta/.fzf" ]; then
+	cp -r "$ruta/.fzf" ~/
+	cp "$ruta/.fzf.zsh" ~/
+	print_green "✅ fzf copiado correctamente"
 
 
 # Copiar configuración personalizada del entorno
