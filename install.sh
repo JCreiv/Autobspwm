@@ -191,14 +191,13 @@ fi
 
 print_green "Copiando wallpapers y creando carpetas"
 
-mkdir -p ~/Wallpaper
-mkdir -p ~/ScreenShots
+mkdir -p ~/Wallpapers
 
-if [ -d "$ruta/Wallpaper" ]; then
-    cp -v "$ruta/Wallpaper/"* ~/Wallpaper
-    print_green "✅ Wallpapers copiados a ~/Wallpaper"
+if [ -d "$ruta/Wallpapers" ]; then
+    cp -v "$ruta/Wallpapers/"* ~/Wallpapers
+    print_green "✅ Wallpapers copiados a ~/Wallpapers"
 else
-    print_red "❌ No se encontró la carpeta $ruta/Wallpaper"
+    print_red "❌ No se encontró la carpeta $ruta/Wallpapers"
 fi
 
 
