@@ -183,10 +183,10 @@ fi
 print_green "Instalando fuentes de Polybar"
 
 if [ -d "$ruta/config/polybar/fonts" ]; then
-    sudo cp -v "$ruta/Config/polybar/fonts/"* /usr/share/fonts/truetype/
+    sudo cp -v "$ruta/config/polybar/fonts/"* /usr/share/fonts/truetype/
     print_green "✅ Fuentes de Polybar copiadas a /usr/share/fonts/truetype/"
 else
-    print_red "❌ No se encontró la carpeta $ruta/Config/polybar/fonts"
+    print_red "❌ No se encontró la carpeta $ruta/config/polybar/fonts"
 fi
 
 print_green "Copiando wallpapers y creando carpetas"
