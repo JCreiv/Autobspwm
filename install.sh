@@ -201,6 +201,7 @@ if [ -d "$ruta/.fzf" ]; then
 	cp -r "$ruta/.fzf" ~/
 	cp "$ruta/.fzf.zsh" ~/
 	print_green "✅ fzf copiado correctamente"
+fi
 
 
 # Copiar configuración personalizada del entorno
