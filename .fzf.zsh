@@ -1,6 +1,6 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */home/javi/.fzf/bin* ]]; then
+if [[ ! "$PATH" == */home/$USER/.fzf/bin* ]]; then
   PATH="${PATH:+${PATH}:}/home/$USER/.fzf/bin"
 fi
 
