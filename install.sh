@@ -131,6 +131,7 @@ if [ ! -d ~/.powerlevel10k ]; then
     print_green "Clonando Powerlevel10k en ~/.powerlevel10k"
     while [ $try -le $MAX_TRIES ]; do
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k && break
+	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k && break
         print_red "Intento $try de $MAX_TRIES fallido. Reintentando en 2 segundos..."
         try=$((try+1))
         sleep 2
@@ -144,6 +145,16 @@ if [ ! -d ~/.powerlevel10k ]; then
     fi
 else
     print_green "✔️  Powerlevel10k ya esta instalado en ~/.powerlevel10k"
+fi
+
+
+# Ahora instalacion para root (solo si no existe)
+if sudo [ ! -d /root/.powerlevel10k ]; then
+    print_green "Clonando Powerlevel10k en /root/.powerlevel10k"
+    cp -r ~/.powerlevel10k  /root/.powerlevel10k
+    print_green "Powerlevel10k instalado para root"
+else
+    print_green "Powerlevel10k ya esta instalado en /root/.powerlevel10k"
 fi
 
 
