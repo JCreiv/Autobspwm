@@ -264,6 +264,7 @@ chmod +x ~/.config/polybar/launch.sh
 
 print_green "Cambiando el tipo de SHELL a Zsh"
 chsh -s $(which zsh)
+sudo chsh -s /usr/bin/zsh root
 
 
 print_green "✅ Configuracion terminada. El sistema se reiniciara en 5 segundos..."
