@@ -147,19 +147,6 @@ else
 fi
 
 
-# Configurar tema Nord para Rofi
-print_green "Configurando tema Nord para Rofi..."
-
-mkdir -p ~/.config/rofi/themes
-
-if [ -f "$ruta/config/rofi/themes/nord.rasi" ]; then
-    cp "$ruta/config/rofi/themes/nord.rasi" ~/.config/rofi/themes/
-    print_green "✅ Tema Nord copiado a ~/.config/rofi/themes/"
-else
-    print_red "❌ El archivo '$ruta/config/rofi/themes/nord.rasi' no se encontró. ¿Está definido \$ruta?"
-fi
-
-
 
 # Instalación de fuentes, lsd y fondos de pantalla
 
