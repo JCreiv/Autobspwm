@@ -13,9 +13,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 #ZSH autosuggestion
-if [ -f /usr/share/zsh-autosuggestion/zsh-autosuggestion.zsh ]; then
-	source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 #ZSH Syntax
 
