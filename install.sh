@@ -1,10 +1,5 @@
 #!/bin/bash
 
-set -x  # Empieza a mostrar cada comando
-set -e  # detiene el script ante el primer error
-trap 'echo "Error en linea $LINENO"' ERR
-
-
 # Ruta de archivos de configuracion
 ruta=$(pwd)
 
