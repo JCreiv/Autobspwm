@@ -262,6 +262,10 @@ chmod +x ~/.config/bspwm/scripts/victim_to_hack.sh
 chmod +x ~/.config/bspwm/scripts/vpn_status.sh
 chmod +x ~/.config/polybar/launch.sh
 
+print_green "Cambiando el tipo de SHELL a Zsh"
+chsh -s $(which zsh)
+
+
 print_green "✅ Configuracion terminada. El sistema se reiniciara en 5 segundos..."
 sleep 5
 sudo reboot now
