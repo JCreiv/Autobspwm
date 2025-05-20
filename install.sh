@@ -121,25 +121,31 @@ else
 fi
 
 
-# Instalar Powerlevel10k para el usuario y root
+# Instalar Powerlevel10k
 print_green "Instalando Powerlevel10k para el usuario..."
 
+MAX_TRIES=3
+try=1
+
 if [ ! -d ~/.powerlevel10k ]; then
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
-    echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
-    print_green "✅ Powerlevel10k instalado y añadido a ~/.zshrc"
+    print_green "Clonando Powerlevel10k en ~/.powerlevel10k"
+    while [ $try -le $MAX_TRIES ]; do
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k && break
+        print_red "Intento $try de $MAX_TRIES fallido. Reintentando en 2 segundos..."
+        try=$((try+1))
+        sleep 2
+    done
+
+    if [ -d ~/.powerlevel10k ]; then
+        echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+        print_green "✅ Powerlevel10k instalado y anadido a ~/.zshrc"
+    else
+        print_red "❌ No se pudo clonar Powerlevel10k despues de $MAX_TRIES intentos."
+    fi
 else
-    print_green "✔️  Powerlevel10k ya está instalado en ~/.powerlevel10k"
+    print_green "✔️  Powerlevel10k ya esta instalado en ~/.powerlevel10k"
 fi
 
-print_green "Instalando Powerlevel10k para root..."
-
-if [ ! -d /root/.powerlevel10k ]; then
-    sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
-    print_green "✅ Powerlevel10k instalado para root."
-else
-    print_green "✔️  Powerlevel10k ya está instalado en /root/.powerlevel10k"
-fi
 
 # Configurar tema Nord para Rofi
 print_green "Configurando tema Nord para Rofi..."
