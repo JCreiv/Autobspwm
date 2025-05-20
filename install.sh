@@ -1,6 +1,5 @@
 #!/bin/bash
 
-print_green "[DEBUG] Activando modo de trazado"
 set -x  # Empieza a mostrar cada comando
 set -e  # detiene el script ante el primer error
 trap 'echo "Error en linea $LINENO"' ERR
@@ -183,7 +182,7 @@ fi
 
 print_green "Instalando fuentes de Polybar"
 
-if [ -d "$ruta/Config/polybar/fonts" ]; then
+if [ -d "$ruta/config/polybar/fonts" ]; then
     sudo cp -v "$ruta/Config/polybar/fonts/"* /usr/share/fonts/truetype/
     print_green "✅ Fuentes de Polybar copiadas a /usr/share/fonts/truetype/"
 else
@@ -212,7 +211,7 @@ print_green "Copiando archivos de configuración del entorno..."
 print_green "🗂️  Configuración en ~/.config"
 
 rm -rf ~/.config/polybar 2>/dev/null
-cp -rv "$ruta/Config/"* ~/.config/
+cp -rv "$ruta/config/"* ~/.config/
 
 # Config kitty (requiere sudo)
 print_green "🖥️  Configuración de Kitty en /opt"
