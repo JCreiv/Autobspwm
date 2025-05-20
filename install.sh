@@ -157,13 +157,20 @@ fi
 
 # Instalación de fuentes, lsd y fondos de pantalla
 
-print_green "Instalando lsd desde archivo .deb"
+print_green "Instalando lsd y bat desde archivo .deb"
 
 if [ -f "$ruta/lsd.deb" ]; then
     sudo dpkg -i "$ruta/lsd.deb"
     print_green "✅ lsd instalado correctamente."
 else
     print_red "❌ No se encontró $ruta/lsd.deb"
+fi
+
+if [ -f "$ruta/bat.deb" ]; then
+    sudo dpkg -i "$ruta/bat.deb"
+    print_green "✅ bat instalado correctamente."
+else
+    print_red "❌ No se encontró $ruta/bat.deb"
 fi
 
 print_green "Instalando Hack Nerd Fonts"
