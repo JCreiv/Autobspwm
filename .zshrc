@@ -10,7 +10,7 @@ fi
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.powerlevel10k/powerlevel10k.zsh-theme
 
 #ZSH autosuggestion
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
