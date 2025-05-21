@@ -151,7 +151,7 @@ fi
 # Ahora instalacion para root (solo si no existe)
 if sudo [ ! -d /root/.powerlevel10k ]; then
     print_green "Clonando Powerlevel10k en /root/.powerlevel10k"
-    cp -r ~/.powerlevel10k  /root/.powerlevel10k
+    sudo cp -r ~/.powerlevel10k  /root/.powerlevel10k
     print_green "Powerlevel10k instalado para root"
 else
     print_green "Powerlevel10k ya esta instalado en /root/.powerlevel10k"
