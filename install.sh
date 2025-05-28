@@ -1,5 +1,26 @@
 #!/bin/bash
 
+#Comprobar el OS
+
+os_name=$(grep '^NAME=' /etc/os-release | awk '{print $1 }' | tr '="' ' ' | awk '{print $2 }')
+
+if [ "$os_name" = "Kali" ]; then
+    echo "Detected OS: Kali"
+    sudo apt update && sudo apt upgrade -y
+elif [ "$os_name" = "Parrot" ]; then
+    echo "Detected OS: Parrot"
+    sudo parrot-upgrade -y && sudo apt update
+elif [ "$os_name" = "Ubuntu" ]; then
+    echo "Detected OS: Ubuntu"
+    sudo apt update && sudo apt upgrade -y
+else 
+    read -p "Unrecognized OS. Do you want to continue? (y/n): " respuesta
+    if [ "$respuesta" != "y" ]; then
+        echo "Aborted."
+        exit 1
+    fi
+fi
+
 # Ruta de archivos de configuracion
 ruta=$(pwd)
 
