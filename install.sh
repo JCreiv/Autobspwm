@@ -9,9 +9,6 @@ function ctrl_c(){
 trap ctrl_c INT
 
 
-
-
-
 #Comprobar el OS
 
 os_name=$(grep '^NAME=' /etc/os-release | awk '{print $1 }' | tr '="' ' ' | awk '{print $2 }')
@@ -19,6 +16,8 @@ os_name=$(grep '^NAME=' /etc/os-release | awk '{print $1 }' | tr '="' ' ' | awk 
 if [ "$os_name" = "Kali" ]; then
     echo "Detected OS: Kali"
     sudo apt upgrade && sudo apt update -y
+    sudo apt install feh
+    sudo apt install bspwm
 elif [ "$os_name" = "Parrot" ]; then
     echo "Detected OS: Parrot"
     sudo parrot-upgrade -y && sudo apt update
