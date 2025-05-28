@@ -1,5 +1,17 @@
 #!/bin/bash
 
+function ctrl_c(){
+  echo -e "\n\n[!] Saliendo...\n"
+  exit 1
+}
+
+#Ctrl_C
+trap ctrl_c INT
+
+
+
+
+
 #Comprobar el OS
 
 os_name=$(grep '^NAME=' /etc/os-release | awk '{print $1 }' | tr '="' ' ' | awk '{print $2 }')
