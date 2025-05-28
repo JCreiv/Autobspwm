@@ -6,13 +6,13 @@ os_name=$(grep '^NAME=' /etc/os-release | awk '{print $1 }' | tr '="' ' ' | awk 
 
 if [ "$os_name" = "Kali" ]; then
     echo "Detected OS: Kali"
-    sudo apt update && sudo apt upgrade -y
+    sudo apt upgrade && sudo apt update -y
 elif [ "$os_name" = "Parrot" ]; then
     echo "Detected OS: Parrot"
     sudo parrot-upgrade -y && sudo apt update
 elif [ "$os_name" = "Ubuntu" ]; then
     echo "Detected OS: Ubuntu"
-    sudo apt update && sudo apt upgrade -y
+    sudo apt upgrade && sudo apt update -y
 else 
     read -p "Unrecognized OS. Do you want to continue? (y/n): " respuesta
     if [ "$respuesta" != "y" ]; then
