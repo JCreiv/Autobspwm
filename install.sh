@@ -21,6 +21,16 @@ else
     fi
 fi
 
+# Comprobación de tarjeta de red
+
+red=$(ip link show | grep '^2:' | awk '{print $2}' | tr -d ':')
+
+if [ "$red" = eth0 ]; then
+    sed -i 's/ens33/eth0/g' ./config/bspwm/scripts/ethernet_status.sh
+fi
+
+
+
 # Ruta de archivos de configuracion
 ruta=$(pwd)
 
