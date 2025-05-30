@@ -3,10 +3,21 @@
 function ctrl_c(){
   echo -e "\n\n[!] Saliendo...\n"
   exit 1
-}
+   }
 
 #Ctrl_C
 trap ctrl_c INT
+
+
+# Función para imprimir en verde
+print_green() {
+    echo -e "\e[32m$1\e[0m"
+}
+
+# Función para imprimir en amarillo
+print_yellow() {
+    echo -e "\e[33m$1\e[0m"
+}
 
 
 #Comprobar el OS
@@ -32,6 +43,31 @@ else
     fi
 fi
 
+
+print_green "Configurando resaltado de sintaxis en nano..."
+
+# Ruta del archivo de configuración de nano
+NANORC="$HOME/.nanorc"
+
+# Paso 1: Asegurar que ~/.nanorc incluye los archivos del sistema
+grep -q "/usr/share/nano/*.nanorc" "$NANORC" 2>/dev/null || echo 'include /usr/share/nano/*.nanorc' >> "$NANORC"
+
+# Paso 2: Instalar esquema de resaltado avanzado (scopatz/nanorc)
+print_green "Instalando esquema de sintaxis avanzado desde GitHub..."
+
+# Elimina versiones anteriores si existen (opcional)
+rm -rf "$HOME/.nano"
+
+# Clona el repositorio
+git clone https://github.com/scopatz/nanorc.git "$HOME/.nano"
+
+# Asegura que ~/.nanorc incluye los archivos clonados
+grep -q "$HOME/.nano" "$NANORC" || echo "include $HOME/.nano/*.nanorc" >> "$NANORC"
+
+print_green "✅ Configuración completada. Abre nano para probar los colores."
+
+
+
 # Comprobación de tarjeta de red
 
 red=$(ip link show | grep '^2:' | awk '{print $2}' | tr -d ':')
@@ -51,15 +87,6 @@ if [ "$(whoami)" == "root" ]; then
     exit 1
 fi
 
-# Función para imprimir en verde
-print_green() {
-    echo -e "\e[32m$1\e[0m"
-}
-
-# Función para imprimir en amarillo
-print_yellow() {
-    echo -e "\e[33m$1\e[0m"
-}
 
 # Instalar dependencias del entorno general
 print_green "Instalando dependencias generales del sistema..."
