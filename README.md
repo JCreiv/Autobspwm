@@ -65,7 +65,7 @@ After installation, log out of your current session and choose **bspwm** as your
 - Wallpapers are stored in the `Wallpapers/` directory. You can add your own images there.
 
 # [THEMES]
----
+
 ## Archkali
 ![](Wallpapers/archkali.png)
 
