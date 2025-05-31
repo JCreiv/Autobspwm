@@ -9,13 +9,13 @@ carpeta_fondos="$HOME/Wallpapers"
 # Mostrar menú
 echo "Elige un fondo de pantalla:"
 select fondo in \
+  "arch.png" \
   "archkali.png" \
-  "fondo.jpg" \
-  "s4vitar.png" \
-  "wall-05.png" \
-  "wallhaven-dgorzl.jpg" \
-  "wallhaven-ne791l.png" \
-  "wallpaperarch.png"
+  "blackArch.png" \
+  "lsd.jpg" \
+  "parrot.jpg" \
+  "purple.png" \
+  "s4vitar.png"
 do
   if [ -n "$fondo" ]; then
     ruta_fondo="$carpeta_fondos/$fondo"
