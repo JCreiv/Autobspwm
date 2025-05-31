@@ -18,20 +18,36 @@ print_red() {
     echo -e "\033[31m$1\033[0m"
 }
 
+
+# Check if figlet is installed
+if ! command -v figlet >/dev/null 2>&1; then
+    sudo apt install -y figlet
+fi
+
+# Use figlet
+clear
+figlet -f slant "Autobspwm"
+print_green "Created by JCreiv"
+print_green "https://github.com/JCreiv"
+echo
+echo
+
+
+
 #Comprobar el OS
 
 os_name=$(grep '^NAME=' /etc/os-release | awk '{print $1 }' | tr '="' ' ' | awk '{print $2 }')
 
 if [ "$os_name" = "Kali" ]; then
-    echo "Detected OS: Kali"
+    print_green "Detected OS: Kali"
     sudo apt upgrade && sudo apt update -y
     sudo apt install feh
     sudo apt install bspwm
 elif [ "$os_name" = "Parrot" ]; then
-    echo "Detected OS: Parrot"
+    print_green "Detected OS: Parrot"
     sudo parrot-upgrade -y && sudo apt update
 elif [ "$os_name" = "Ubuntu" ]; then
-    echo "Detected OS: Ubuntu"
+    print_green "Detected OS: Ubuntu"
     sudo apt upgrade && sudo apt update -y
 else 
     read -p "Unrecognized OS. Do you want to continue? (y/n): " respuesta
