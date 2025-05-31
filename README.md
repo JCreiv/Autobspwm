@@ -36,5 +36,5 @@
 
 4. Follow the prompts during installation to complete the setup.
 
-![](Wallpapers/archkali.png)
+![Archkali](Wallpapers/archkali.png)
 
