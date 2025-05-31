@@ -116,7 +116,7 @@ sudo apt install -y \
 
 sudo apt install -y \
     feh flameshot scrub zsh rofi xclip bat locate neofetch wmname \
-    acpi bspwm sxhkd imagemagick ranger kitty
+    acpi bspwm sxhkd imagemagick ranger kitty i3lock-fancy
 
 
 # Crear carpeta de trabajo y clonar repositorios
