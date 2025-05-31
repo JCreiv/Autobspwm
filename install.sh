@@ -21,7 +21,7 @@ print_red() {
 
 # Check if figlet is installed
 if ! command -v figlet >/dev/null 2>&1; then
-    sudo apt install -y figlet
+    sudo apt update && install -y figlet
 fi
 
 # Use figlet
