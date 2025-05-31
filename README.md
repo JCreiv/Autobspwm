@@ -69,7 +69,23 @@ After installation, log out of your current session and choose **bspwm** as your
 ## Archkali
 ![](Wallpapers/archkali.png)
 
+## Arch
+![](Wallpapers/arch.png)
 
+## BlackArch
+![](Wallpapers/blackArch.png)
+
+## Lsd
+![](Wallpapers/lsd.jpg)
+
+## Parrot
+![](Wallpapers/parrot.jpg)
+
+## Purple
+![](Wallpapers/purple.png)
+
+## S4vitar
+![](Wallpapers/s4vitar.png)
 ## License
 
 This project is licensed under the MIT License.
