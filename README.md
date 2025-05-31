@@ -1,4 +1,3 @@
-
 # Autobspwm
 
 **Autobspwm** is an automation script designed to configure and personalize a tiling window manager setup using **bspwm**, **kitty**, and **sxhkd** on Debian/Ubuntu-based systems.
@@ -63,6 +62,18 @@ After installation, log out of your current session and choose **bspwm** as your
     - `kitty.conf` (for terminal appearance)
         
 - Wallpapers are stored in the `Wallpapers/` directory. You can add your own images there.
+
+## Wallpaper Management
+
+To change the desktop wallpaper, this project includes a script called `wallpaper.sh`.  
+It provides a simple interactive menu to select from predefined wallpapers located in the `Wallpapers/` directory.
+
+### Usage
+
+```bash
+chmod +x wallpaper.sh
+./wallpaper.sh
+```
 
 # [THEMES]
 
