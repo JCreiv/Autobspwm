@@ -13,7 +13,7 @@
 
 ## Compatibility
 
-This script has been tested on the following Linux distributions:
+This script has been tested on the following VMware Linux distributions:
 
 - ✅ Parrot OS
 - ✅ Kali Linux
