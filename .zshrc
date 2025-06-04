@@ -91,6 +91,39 @@ export PATH=/opt/kitty/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/ga
 #Custom function
 #----------------------------
 
+# Push changes to github
+function gpush() {
+  if [ -z "$1" ]; then
+    echo -e "\033[31m❌ Tienes que escribir un mensaje de commit."
+    echo "Uso: gpush \"mensaje del commit\""
+    return 1
+  fi  
+
+  git add .
+  echo -e "\033[32m📝 Commit: $1"  
+  git commit -m "$1"
+
+  # Detectar rama actual
+  local branch
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+  if [ -z "$branch" ]; then
+    echo -e "\033[31m❌ No se detecto la rama actual. ¿Inicializaste Git con git init?"
+    return 1
+  fi
+
+  # Verificar si hay upstream
+  if git rev-parse --abbrev-ref --symbolic-full-name @{u} &>/dev/null; then
+    echo -e "\033[34m📤 Pusheando a rama remota vinculada ($branch)..."
+    git push
+  else
+    echo -e "\033[33m⚠️  No hay upstream. Usando: git push --set-upstream origin $branch"
+    git push --set-upstream origin "$branch"
+  fi
+}
+
+
+
 #Delete all files
 
 nuke() {
