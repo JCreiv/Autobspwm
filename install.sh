@@ -21,6 +21,7 @@ print_red() {
 
 # Install figlet
     sudo apt update && install -y figlet
+	sudo wget -O /usr/share/figlet/slant.flf http://www.figlet.org/fonts/slant.flf
 
 # Use figlet
 clear
