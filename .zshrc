@@ -49,9 +49,6 @@ alias lla='lsd -lha --group-dirs=first'
 alias ls='lsd --group-dirs=first'
 alias lll='ls -la'
 
-#xclip
-alias toclip="xclip -selection clipboard"
-
 #grep
 alias grep='grep --color=auto'
 
@@ -214,6 +211,25 @@ img() {
     sleep 0.4
   done
   tput cnorm
+}
+
+#xclip function
+toclip() {
+    # Función para copiar archivos, texto o la salida de comandos
+    # Ejemplos de uso:
+    #   toclip install.sh        -> Copia el archivo install.sh al portapapeles
+    #   echo "Hola mundo" | toclip   -> Copia texto desde un pipe
+    #   ls -l | toclip           -> Copia la salida de un comando
+
+    if [ -t 0 ]; then
+        # Si stdin es un terminal → copiamos archivo pasado como argumento
+        xclip -selection clipboard -i "$1"
+    else
+        # Si hay pipe → copiamos lo que llega por stdin
+        xclip -selection clipboard
+    fi
+    # Sincronizamos PRIMARY con CLIPBOARD
+    xclip -selection clipboard -o | xclip -selection primary -i
 }
 
 
