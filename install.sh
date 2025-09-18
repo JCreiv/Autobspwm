@@ -31,7 +31,25 @@ print_green "https://github.com/JCreiv"
 echo
 echo
 
+if command -v systemd-detect-virt &>/dev/null; then
+    VIRT_TYPE=$(systemd-detect-virt)
+else
+    VIRT_TYPE="unknown"
+fi
 
+if [[ "$VIRT_TYPE" == "none" ]]; then
+    print_red "Hardware físico."
+elif [[ "$VIRT_TYPE" == "unknown" ]]; then
+	print_red "VM u otro hypervisor: $VIRT_TYPE"
+else
+    print_green "VM: $VIRT_TYPE"
+
+    # Comprobar si es VMware
+    if [[ "$VIRT_TYPE" == "vmware" ]]; then
+        print_green "Instalando tools vmware"
+        sudo apt install -y open-vm-tools open-vm-tools-desktop
+    fi
+fi
 
 #Comprobar el OS
 
