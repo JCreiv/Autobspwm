@@ -278,6 +278,8 @@ fi
 if [ -d "$ruta/.fzf" ]; then
 	cp -r "$ruta/.fzf" ~/
 	cp "$ruta/.fzf.zsh" ~/
+	sudo cp -r "$ruta/.fzf" /root/
+    sudo cp "$ruta/.fzf.zsh" /root/
 fi
 
 
