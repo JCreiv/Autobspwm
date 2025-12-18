@@ -184,7 +184,43 @@ Here is a list of useful keyboard shortcuts and commands used in this setup:
 21. **F1 + F3** → Copy  
     **F2 + F4** → Paste
 
+## Tools Installation Script
 
+This repository also includes an optional script to automate the installation of common **pentesting and recon tools**, intended to be used alongside the bspwm environment.
+
+### Features
+
+- Automatic installation of:
+  - **Go** (latest version)
+  - **Docker** and Docker Compose
+  - Go-based recon tools such as:
+    - Amass
+    - Subfinder
+    - Httpx
+  - **BloodHound** for Active Directory enumeration
+  - Rust-based tools like **RustHound**
+- Automatic dependency handling
+- PATH configuration for Go
+- Designed for Debian-based systems
+
+### Compatibility
+
+### Usage
+
+1. Make the tools installer executable:
+
+    ```bash
+    chmod +x install-tools.sh
+    ```
+
+2. Run the script:
+
+    ```bash
+    ./tools.sh
+    ```
+
+3. Follow the on-screen instructions.  
+   The script will install and configure all selected tools automatically.
 
 ## License
 
