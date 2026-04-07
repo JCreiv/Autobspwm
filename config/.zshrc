@@ -1,0 +1,244 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+#Fix the java problem
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+source ~/.powerlevel10k/powerlevel10k.zsh-theme
+
+#ZSH autosuggestion
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+#ZSH Syntax
+if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+#ZSH autocomplete
+#if [ -f /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]; then
+ #   source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+#fi
+
+#ZSH sudo
+if [ -f /usr/share/zsh-sudo/sudo.plugin.zsh ]; then
+    source /usr/share/zsh-sudo/sudo.plugin.zsh
+fi
+
+# Custom Aliases
+# -----------------------------------------------
+# bat
+alias cat='batcat'
+alias catn='batcat --style=plain'
+alias catnp='batcat --style=plain --paging=never'
+
+
+# ls
+alias ll='lsd -lh --group-dirs=first'
+alias la='lsd -a --group-dirs=first'
+alias l='lsd --group-dirs=first'
+alias lla='lsd -lha --group-dirs=first'
+alias ls='lsd --group-dirs=first'
+alias lll='ls -la'
+
+#grep
+alias grep='grep --color=auto'
+
+#History
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000 
+setopt histignorealldups sharehistory incappendhistory
+
+# Use modern completion system
+autoload -Uz compinit
+compinit
+
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+
+export LS_COLORS="rs=0:di=34:ln=36:mh=00:pi=40;33:so=35:do=35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=32:*.tar=31:*.tgz=31:*.arc=31:*.arj=31:*.taz=31:*.lha=31:*.lz4=31:*.lzh=31:*.lzma=31:*.tlz=31:*.txz=31:*.tzo=31:*.t7z=31:*.zip=31:*.z=31:*.dz=31:*.gz=31:*.lrz=31:*.lz=31:*.lzo=31:*.xz=31:*.zst=31:*.tzst=31:*.bz2=31:*.bz=31:*.tbz=31:*.tbz2=31:*.tz=31:*.deb=31:*.rpm=31:*.jar=31:*.war=31:*.ear=31:*.sar=31:*.rar=31:*.alz=31:*.ace=31:*.zoo=31:*.cpio=31:*.7z=31:*.rz=31:*.cab=31:*.wim=31:*.swm=31:*.dwm=31:*.esd=31:*.avif=35:*.jpg=35:*.jpeg=35:*.mjpg=35:*.mjpeg=35:*.gif=35:*.bmp=35:*.pbm=35:*.pgm=35:*.ppm=35:*.tga=35:*.xbm=35:*.xpm=35:*.tif=35:*.tiff=35:*.png=35:*.svg=35:*.svgz=35:*.mng=35:*.pcx=35:*.mov=35:*.mpg=35:*.mpeg=35:*.m2v=35:*.mkv=35:*.webm=35:*.webp=35:*.ogm=35:*.mp4=35:*.m4v=35:*.mp4v=35:*.vob=35:*.qt=35:*.nuv=35:*.wmv=35:*.asf=35:*.rm=35:*.rmvb=35:*.flc=35:*.avi=35:*.fli=35:*.flv=35:*.gl=35:*.dl=35:*.xcf=35:*.xwd=35:*.yuv=35:*.cgm=35:*.emf=35:*.ogv=35:*.ogx=35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.swp=00;90:*.tmp=00;90:*.dpkg-dist=00;90:*.dpkg-old=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:"
+
+export PATH=/opt/kitty/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin/:/opt/nvim/nvim-linux64/bin:/snap/bin
+
+#Custom function
+#----------------------------
+
+# Push changes to github
+function gpush() {
+  if [ -z "$1" ]; then
+    echo -e "\033[31m❌ Tienes que escribir un mensaje de commit."
+    echo "Uso: gpush \"mensaje del commit\""
+    return 1
+  fi
+
+  git add .
+  echo -e "\033[32m📝 Commit: $1"  
+  git commit -m "$1"
+
+  # Detectar rama actual
+  local branch
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+  if [ -z "$branch" ]; then
+    echo -e "\033[31m❌ No se detecto la rama actual. ¿Inicializaste Git con git init?"
+    return 1
+  fi
+
+  # Verificar si hay upstream
+  if git rev-parse --abbrev-ref --symbolic-full-name @{u} &>/dev/null; then
+    echo -e "\033[34m📤 Pusheando a rama remota vinculada ($branch)..."
+    git push
+  else
+    echo -e "\033[33m⚠️  No hay upstream. Usando: git push --set-upstream origin $branch"
+    git push --set-upstream origin "$branch"
+  fi
+}
+
+
+
+#Delete all files
+nuke() {
+  local keep=("${@}")
+  local find_cmd="find . -maxdepth 1"
+  local preview_cmd="find . -maxdepth 1"
+
+  for file in "${keep[@]}"; do
+    find_cmd+=" ! -name '${file}'"
+    preview_cmd+=" ! -name '${file}'"
+  done
+
+  find_cmd+=" ! -name '.' -exec rm -rf {} +"
+  preview_cmd+=" ! -name '.' -print"
+
+  echo "🧹 Archivos/directorios que se eliminarán:"
+  eval "$preview_cmd"
+
+  echo
+  print -n "⚠️  ¿Estás seguro de querer eliminar esos archivos? (escribe 'y' para continuar): "
+  read confirm1
+  if [[ "$confirm1" != "y" ]]; then
+    echo "❌ Cancelado."
+    return 1
+  fi
+
+  echo "✅ Ejecutando: $find_cmd"
+  eval "$find_cmd"
+}
+
+
+
+#Set Victim Target
+settarget() {
+    if [ -z "$1" ]; then
+        echo "" > /tmp/.target
+        echo "[*] Target limpiado"
+    else
+        echo "$1 $2" > /tmp/.target
+        echo "[*] Target seteado: $1 $2"
+    fi
+}
+
+#Directory maker
+function mkt(){
+    mkdir {nmap,content,exploits,scripts}
+}
+
+
+# Extract nmap information
+function extractPorts(){
+    ports="$(cat $1 | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',')"
+    ip_address="$(cat $1 | grep -oP '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' | sort -u | head -n 1)"
+    echo -e "\n[*] Extracting information...\n" > extractPorts.tmp
+    echo -e "\t[*] IP Address: $ip_address"  >> extractPorts.tmp
+    echo -e "\t[*] Open ports: $ports\n"  >> extractPorts.tmp
+    echo $ports | tr -d '\n' | xclip -sel clip
+    echo -e "[*] Ports copied to clipboard\n"  >> extractPorts.tmp
+    cat extractPorts.tmp; rm extractPorts.tmp
+}
+
+# Show images one by one
+: <<'COMENTARIO'
+img() { 
+  for f in "$@"; do
+    clear
+    tput civis
+    printf "\n\033[1;32mMostrando:\033[0m %s\n\n" "$f"
+    sleep 0.4
+    kitty +kitten icat "$f"
+    printf "\n\033[1;33mPresiona ENTER para continuar...\033[0m"
+    read -r
+    clear
+  done
+  tput cnorm
+}
+COMENTARIO
+
+# Show images all at once
+img() {
+  for f in "$@"; do
+    tput civis
+    printf "\n\033[1;32mMostrando:\033[0m %s\n\n" "$f"
+    kitty +kitten icat "$f"
+    sleep 0.4
+  done
+  tput cnorm
+}
+
+#xclip function
+toclip() {
+    # Función para copiar archivos, texto o la salida de comandos
+    # Ejemplos de uso:
+    #   toclip install.sh        -> Copia el archivo install.sh al portapapeles
+    #   echo "Hola mundo" | toclip   -> Copia texto desde un pipe
+    #   ls -l | toclip           -> Copia la salida de un comando
+
+    if [ -t 0 ]; then
+        # Si stdin es un terminal → copiamos archivo pasado como argumento
+        xclip -selection clipboard -i "$1"
+    else
+        # Si hay pipe → copiamos lo que llega por stdin
+        xclip -selection clipboard
+    fi
+    # Sincronizamos PRIMARY con CLIPBOARD
+    xclip -selection clipboard -o | xclip -selection primary -i
+}
+
+
+
+# Powerlevel10k config según usuario
+if [[ $EUID -eq 0 ]]; then
+    [[ -f ~/.p10k-root.zsh ]] && source ~/.p10k-root.zsh
+else
+    [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+#Expresiones regulares
+setopt extendedglob
+

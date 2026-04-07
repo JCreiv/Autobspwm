@@ -1,348 +1,288 @@
 #!/bin/bash
-
-function ctrl_c(){
-  echo -e "\n\n[!] Saliendo...\n"
-  exit 1
-   }
-
-#Ctrl_C
+ 
+# ─────────────────────────────────────────────
+#  Configuración global
+# ─────────────────────────────────────────────
+set -euo pipefail
+ 
+# Ctrl+C handler
+function ctrl_c() {
+    echo -e "\n\n[!] Saliendo...\n"
+    exit 1
+}
 trap ctrl_c INT
-
-
-# Función para imprimir en verde
-print_green() {
-    echo -e "\e[32m$1\e[0m"
-}
-# Función para imprimir en rojo
-print_red() {
-    echo -e "\033[31m$1\033[0m"
-}
-
-
-# Install figlet
-    sudo apt update && sudo apt install -y figlet
-	sudo wget -O /usr/share/figlet/slant.flf http://www.figlet.org/fonts/slant.flf
-
-# Use figlet
+ 
+# ─────────────────────────────────────────────
+#  Funciones de utilidad
+# ─────────────────────────────────────────────
+print_green() { echo -e "\e[32m$1\e[0m"; }
+print_red()   { echo -e "\e[31m$1\e[0m"; }
+print_yellow(){ echo -e "\e[33m$1\e[0m"; }
+ 
+# ─────────────────────────────────────────────
+#  Comprobación de root (PRIMERO, antes de todo)
+# ─────────────────────────────────────────────
+if [ "$(id -u)" -eq 0 ]; then
+    print_red "❌ No ejecutes este script como root."
+    exit 1
+fi
+ 
+# ─────────────────────────────────────────────
+#  Banner
+# ─────────────────────────────────────────────
+if ! command -v figlet &>/dev/null; then
+    sudo apt-get update -qq && sudo apt-get install -y -qq figlet
+fi
+ 
+SLANT_FONT="/usr/share/figlet/slant.flf"
+if [ ! -f "$SLANT_FONT" ]; then
+    sudo wget -q -O "$SLANT_FONT" http://www.figlet.org/fonts/slant.flf
+fi
+ 
 clear
 figlet -f slant "Autobspwm"
 print_green "Created by JCreiv"
 print_green "https://github.com/JCreiv"
 echo
-echo
-
+ 
+# ─────────────────────────────────────────────
+#  Detección de virtualización
+# ─────────────────────────────────────────────
 if command -v systemd-detect-virt &>/dev/null; then
     VIRT_TYPE=$(systemd-detect-virt)
 else
     VIRT_TYPE="unknown"
 fi
+ 
+case "$VIRT_TYPE" in
+    none)
+        print_yellow "⚠️  Hardware físico detectado."
+        ;;
+    vmware)
+        print_green "VM detectada: VMware. Instalando open-vm-tools..."
+        sudo apt-get install -y open-vm-tools open-vm-tools-desktop
+        ;;
+    unknown)
+        print_yellow "⚠️  No se pudo determinar el tipo de virtualización."
+        ;;
+    *)
+        print_green "VM detectada: $VIRT_TYPE"
+        ;;
+esac
+ 
+# ─────────────────────────────────────────────
+#  Detección del sistema operativo
+# ─────────────────────────────────────────────
+os_name=$(grep '^NAME=' /etc/os-release | cut -d'"' -f2 | awk '{print $1}')
+ 
+case "$os_name" in
+    Kali)
+        print_green "OS detectado: Kali"
+        sudo apt-get update -qq && sudo apt-get upgrade -y
+        ;;
+    Parrot)
+        print_green "OS detectado: Parrot"
+        sudo parrot-upgrade -y && sudo apt-get update -qq
+        ;;
+    Ubuntu)
+        print_green "OS detectado: Ubuntu"
+        sudo apt-get update -qq && sudo apt-get upgrade -y
+        ;;
+    *)
+        print_yellow "OS no reconocido: $os_name"
+        read -rp "¿Deseas continuar de todas formas? (s/n): " respuesta
+        if [[ "$respuesta" != "s" && "$respuesta" != "S" ]]; then
+            echo "Abortado."
+            exit 1
+        fi
+        ;;
+esac
+ 
+# ─────────────────────────────────────────────
+#  Configuración de nanorc
+# ─────────────────────────────────────────────
 
-if [[ "$VIRT_TYPE" == "none" ]]; then
-    print_red "Hardware físico."
-elif [[ "$VIRT_TYPE" == "unknown" ]]; then
-	print_red "VM u otro hypervisor: $VIRT_TYPE"
-else
-    print_green "VM: $VIRT_TYPE"
+configure_nanorc() {
+    local dest="$1"
+    local use_sudo="$2"
+    local nanorc="$dest/.nanorc"
+    local nano_dir="$dest/.nano"
 
-    # Comprobar si es VMware
-    if [[ "$VIRT_TYPE" == "vmware" ]]; then
-        print_green "Instalando tools vmware"
-        sudo apt install -y open-vm-tools open-vm-tools-desktop
-    fi
-fi
+    if [ "$use_sudo" = "true" ]; then
+        sudo grep -q "/usr/share/nano/\*.nanorc" "$nanorc" 2>/dev/null || \
+            echo 'include /usr/share/nano/*.nanorc' | sudo tee -a "$nanorc" > /dev/null
 
-#Comprobar el OS
+        if sudo [ -d "$nano_dir" ]; then
+            print_green "✔️  Configuración de nano ya existe en $dest. Omitiendo clonado."
+        else
+            sudo git clone https://github.com/scopatz/nanorc.git "$nano_dir"
+        fi
 
-os_name=$(grep '^NAME=' /etc/os-release | awk '{print $1 }' | tr '="' ' ' | awk '{print $2 }')
-
-if [ "$os_name" = "Kali" ]; then
-    print_green "Detected OS: Kali"
-    sudo apt upgrade && sudo apt update -y
-    sudo apt install feh
-    sudo apt install bspwm
-elif [ "$os_name" = "Parrot" ]; then
-    print_green "Detected OS: Parrot"
-    sudo parrot-upgrade -y && sudo apt update
-elif [ "$os_name" = "Ubuntu" ]; then
-    print_green "Detected OS: Ubuntu"
-    sudo apt upgrade && sudo apt update -y
-else 
-    read -p "Unrecognized OS. Do you want to continue? (y/n): " respuesta
-    if [ "$respuesta" != "y" ]; then
-        echo "Aborted."
-        exit 1
-    fi
-fi
-
-# Ruta del archivo de configuración de nano
-NANORC="$HOME/.nanorc"
-
-# Paso 1: Asegurar que ~/.nanorc incluye los archivos del sistema
-grep -q "/usr/share/nano/*.nanorc" "$NANORC" 2>/dev/null || echo 'include /usr/share/nano/*.nanorc' >> "$NANORC"
-
-# Paso 2: Instalar esquema de resaltado avanzado (scopatz/nanorc)
-
-# Elimina versiones anteriores si existen (opcional)
-rm -rf "$HOME/.nano"
-
-# Clona el repositorio
-git clone https://github.com/scopatz/nanorc.git "$HOME/.nano"
-
-# Asegura que ~/.nanorc incluye los archivos clonados
-grep -q "$HOME/.nano" "$NANORC" || echo "include $HOME/.nano/*.nanorc" >> "$NANORC"
-
-
-
-# Comprobación de tarjeta de red
-
-red=$(ip link show | grep '^2:' | awk '{print $2}' | tr -d ':')
-
-if [ "$red" = eth0 ]; then
-    sed -i 's/ens33/eth0/g' ./config/bspwm/scripts/ethernet_status.sh
-fi
-
-
-
-# Ruta de archivos de configuracion
-ruta=$(pwd)
-
-# Evitar ejecución como root
-if [ "$(whoami)" == "root" ]; then
-    echo -e "\e[31m❌ Dont execute this script as root.\e[0m"
-    exit 1
-fi
-
-
-# Instalar dependencias del entorno general
-
-sudo apt update
-sudo apt install -y \
-    build-essential git vim xcb \
-    libxcb-util0-dev libxcb-ewmh-dev libxcb-randr0-dev \
-    libxcb-icccm4-dev libxcb-keysyms1-dev libxcb-xinerama0-dev \
-    libasound2-dev libxcb-xtest0-dev libxcb-shape0-dev net-tools
-
-print_green "✅ Dependencias generales instaladas."
-
-# Dependencias para Polybar (compilación desde código fuente)
-
-sudo apt install -y \
-    cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev \
-    libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen \
-    xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev \
-    libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev \
-    libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev
-
-
-# Dependencias para Picom (compilación desde código fuente)
-
-sudo apt install -y \
-    meson libxext-dev libxcb1-dev libxcb-damage0-dev libxcb-xfixes0-dev \
-    libxcb-shape0-dev libxcb-render-util0-dev libxcb-render0-dev \
-    libxcb-composite0-dev libxcb-image0-dev libxcb-present-dev \
-    libxcb-xinerama0-dev libpixman-1-dev libdbus-1-dev libconfig-dev \
-    libgl1-mesa-dev libpcre2-dev libevdev-dev uthash-dev libev-dev \
-    libx11-xcb-dev libxcb-glx0-dev libpcre3 libpcre3-dev
-
-
-# Instalación de herramientas adicionales para el entorno
-
-sudo apt install -y \
-    feh flameshot scrub zsh rofi xclip bat locate neofetch wmname \
-    acpi bspwm sxhkd imagemagick ranger kitty i3lock-fancy
-
-
-# Crear carpeta de trabajo y clonar repositorios
-print_green "Preparing directory ~/github"
-
-mkdir -p ~/github
-cd ~/github || exit 1
-
-# Clonar Polybar si no existe
-if [ ! -d "polybar" ]; then
-    print_green "🔽 Cloning Polybar..."
-    git clone --recursive https://github.com/polybar/polybar
-else
-    print_green "Polybar is already cloned"
-fi
-
-# Clonar Picom si no existe
-if [ ! -d "picom" ]; then
-    git clone https://github.com/ibhagwan/picom.git
-else
-    print_green "Picom is already cloned"
-fi
-
-# Compilar e instalar Polybar
-
-if [ -d ~/github/polybar ]; then
-    cd ~/github/polybar || exit 1
-    mkdir -p build
-    cd build || exit 1
-
-    cmake ..
-    make -j"$(nproc)"
-    sudo make install
-
-else
-    print_red "❌ Directory ~/github/polybar not found."
-fi
-
-# Compilar e instalar Picom (ibhagwan)
-
-if [ -d ~/github/picom ]; then
-    cd ~/github/picom || exit 1
-    git submodule update --init --recursive
-
-    meson --buildtype=release . build
-    ninja -C build
-    sudo ninja -C build install
-
-else
-    print_red "❌ Directory ~/github/picom not found."
-fi
-
-
-# Instalar Powerlevel10k
-
-MAX_TRIES=3
-try=1
-
-if [ ! -d ~/.powerlevel10k ]; then
-    while [ $try -le $MAX_TRIES ]; do
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k && break
-	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k && break
-        try=$((try+1))
-        sleep 2
-    done
-
-    if [ -d ~/.powerlevel10k ]; then
-        echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+        sudo grep -q "$nano_dir" "$nanorc" 2>/dev/null || \
+            echo "include $nano_dir/*.nanorc" | sudo tee -a "$nanorc" > /dev/null
     else
-        print_red "❌ No se pudo clonar Powerlevel10k despues de $MAX_TRIES intentos."
+        grep -q "/usr/share/nano/\*.nanorc" "$nanorc" 2>/dev/null || \
+            echo 'include /usr/share/nano/*.nanorc' >> "$nanorc"
+
+        if [ -d "$nano_dir" ]; then
+            print_green "✔️  Configuración de nano ya existe en $dest. Omitiendo clonado."
+        else
+            git clone https://github.com/scopatz/nanorc.git "$nano_dir"
+        fi
+
+        grep -q "$nano_dir" "$nanorc" 2>/dev/null || \
+            echo "include $nano_dir/*.nanorc" >> "$nanorc"
     fi
-else
-    print_green "Powerlevel10k is alredy installed in ~/.powerlevel10k"
+}
+
+configure_nanorc "$HOME" "false"
+configure_nanorc "/root" "true"
+ 
+# ─────────────────────────────────────────────
+#  Detección de interfaz de red
+# ─────────────────────────────────────────────
+ruta=$(pwd)
+red=$(ip link show | awk '/^2:/{print $2}' | tr -d ':')
+ETHERNET_SCRIPT="$ruta/config/bspwm/scripts/ethernet_status.sh"
+ 
+if [ "$red" = "eth0" ] && [ -f "$ETHERNET_SCRIPT" ]; then
+    sed -i 's/ens33/eth0/g' "$ETHERNET_SCRIPT"
 fi
-
-
-# Ahora instalacion para root (solo si no existe)
-if sudo [ ! -d /root/.powerlevel10k ]; then
-    sudo cp -r ~/.powerlevel10k  /root/.powerlevel10k
-    print_green "Powerlevel10k instalado para root"
-else
-    print_green "Powerlevel10k is alredy installed in /root/.powerlevel10k"
-fi
-
-
-
-# Instalación de fuentes, lsd y fondos de pantalla
-
-
-if [ -f "$ruta/lsd.deb" ]; then
-    sudo dpkg -i "$ruta/lsd.deb"
-else
-    print_red "❌ Not found $ruta/lsd.deb"
-fi
-
-if [ -f "$ruta/bat.deb" ]; then
-    sudo dpkg -i "$ruta/bat.deb"
-else
-    print_red "❌ Not found $ruta/bat.deb"
-fi
-
-
+ 
+# ─────────────────────────────────────────────
+#  Instalación de paquetes
+# ─────────────────────────────────────────────
+print_green "Instalando paquetes necesarios..."
+sudo apt-get install -y \
+    feh flameshot scrub zsh rofi xclip bat locate fastfetch suckless-tools acpi \
+    bspwm sxhkd imagemagick ranger i3lock-fancy git lsd kitty polybar \
+    picom nano unzip fonts-noto-color-emoji zsh-syntax-highlighting \
+    zsh-autosuggestions wget
+ 
+# ─────────────────────────────────────────────
+#  Zsh: .zshrc y .p10k.zsh
+# ─────────────────────────────────────────────
+[ -f "$HOME/.zshrc" ] && mv "$HOME/.zshrc" "$HOME/.zshrc.bak" && \
+    print_yellow "⚠️  Backup creado: ~/.zshrc.bak"
+ 
+cp -v "$ruta/config/.zshrc"          "$HOME/.zshrc"
+cp -v "$ruta/config/.p10k.zsh"       "$HOME/.p10k.zsh"
+ 
+sudo cp -v "$ruta/config/.zshrc"     /root/.zshrc
+sudo sed -i "s|$HOME|/root|g"        /root/.zshrc
+sudo cp -v "$ruta/config/.p10k-root.zsh" /root/.p10k-root.zsh
+ 
+# ─────────────────────────────────────────────
+#  Powerlevel10k (usuario + root)
+# ─────────────────────────────────────────────
+echo -ne "\n[+] Instalando Powerlevel10k\n"
+ 
+install_p10k() {
+    local dest="$1"
+    local use_sudo="$2"
+    local zshrc="$dest/.zshrc"
+    local p10k_dir="$dest/.powerlevel10k"
+ 
+    if [ -d "$p10k_dir" ]; then
+        print_green "✔️  Powerlevel10k ya instalado en $p10k_dir"
+        return 0
+    fi
+ 
+    if [ "$use_sudo" = "true" ]; then
+        sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$p10k_dir"
+        sudo grep -q "powerlevel10k.zsh-theme" "$zshrc" 2>/dev/null || \
+            echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' | sudo tee -a "$zshrc" > /dev/null
+    else
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$p10k_dir"
+        grep -q "powerlevel10k.zsh-theme" "$zshrc" 2>/dev/null || \
+            echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> "$zshrc"
+    fi
+}
+ 
+install_p10k "$HOME" "false"
+install_p10k "/root" "true"
+print_green "✔️  Powerlevel10k configurado para usuario y root."
+ 
+# ─────────────────────────────────────────────
+#  Fuentes
+# ─────────────────────────────────────────────
 if [ -d "$ruta/fonts/HNF" ]; then
     sudo cp -v "$ruta/fonts/HNF/"* /usr/local/share/fonts/
 else
-    print_red "❌ Not found $ruta/fonts/HNF"
+    print_red "❌ No encontrado: $ruta/fonts/HNF"
 fi
-
-
+ 
 if [ -d "$ruta/config/polybar/fonts" ]; then
     sudo cp -v "$ruta/config/polybar/fonts/"* /usr/share/fonts/truetype/
 else
-    print_red "❌ Not found $ruta/config/polybar/fonts"
+    print_red "❌ No encontrado: $ruta/config/polybar/fonts"
 fi
-
-
+ 
+# ─────────────────────────────────────────────
+#  Wallpapers
+# ─────────────────────────────────────────────
 mkdir -p ~/Wallpapers
-
 if [ -d "$ruta/Wallpapers" ]; then
-    cp -v "$ruta/Wallpapers/"* ~/Wallpapers
+    cp -v "$ruta/Wallpapers/"* ~/Wallpapers/
 else
-    print_red "❌ Not found $ruta/Wallpapers"
+    print_red "❌ No encontrado: $ruta/Wallpapers"
 fi
-
-
-if [ -d "$ruta/.fzf" ]; then
-	cp -r "$ruta/.fzf" ~/
-	cp "$ruta/.fzf.zsh" ~/
-	sudo cp -r "$ruta/.fzf" /root/
-    sudo cp "$ruta/.fzf.zsh" /root/
-fi
-
-
-# Copiar configuración personalizada del entorno
-
-# Config ~/.config/
-
-rm -rf ~/.config/polybar 2>/dev/null
-cp -rv "$ruta/config/"* ~/.config/
-
-# Config kitty (requiere sudo)
-
-if [ -d "$ruta/kitty" ]; then
-    sudo cp -rv "$ruta/kitty" /opt/
-else
-    print_red "❌ Not found $ruta/kitty"
-fi
-
-# Configuración de .zshrc y .p10k.zsh
-
-if [ -f ~/.zshrc ]; then
-    mv ~/.zshrc ~/.zshrc.bak
-fi
-
-cp -v "$ruta/.zshrc" ~/.zshrc
-cp -v "$ruta/.p10k.zsh" ~/.p10k.zsh
-
-# Para root
-sudo cp -v "$ruta/.p10k-root.zsh" /root/.p10k.zsh
-
-
-# Zsh plugins y permisos
-
-
-sudo apt install -y zsh-syntax-highlighting zsh-autosuggestions
-
-# sudo.plugin.zsh manual
-if [ ! -f /usr/share/zsh-sudo/sudo.plugin.zsh ]; then
+ 
+# ─────────────────────────────────────────────
+#  fzf
+# ─────────────────────────────────────────────
+echo -ne "\n[+] Instalando fzf\n"
+ 
+install_fzf() {
+    local dest="$1"
+    local use_sudo="$2"
+ 
+    if [ -d "$dest/.fzf" ]; then
+        print_green "✔️  fzf ya instalado en $dest/.fzf"
+        return 0
+    fi
+ 
+    if [ "$use_sudo" = "true" ]; then
+        sudo git clone --depth=1 https://github.com/junegunn/fzf.git "$dest/.fzf"
+        sudo env SHELL=/bin/zsh HOME="$dest" "$dest/.fzf/install" --all --no-bash --no-fish
+    else
+        git clone --depth=1 https://github.com/junegunn/fzf.git "$dest/.fzf"
+        env SHELL=/bin/zsh "$dest/.fzf/install" --all --no-bash --no-fish
+    fi
+}
+ 
+install_fzf "$HOME" "false"
+install_fzf "/root" "true"
+print_green "✔️  fzf instalado para usuario y root."
+ 
+# ─────────────────────────────────────────────
+#  Configuración del entorno (~/.config)
+# ─────────────────────────────────────────────
+ 
+cp -rv "$ruta/config/"* "$HOME/.config/"
+ 
+# Restaurar .zshrc por si el cp lo sobreescribió
+cp -v "$ruta/config/.zshrc" "$HOME/.zshrc"
+ 
+# ─────────────────────────────────────────────
+#  sudo.plugin.zsh
+# ─────────────────────────────────────────────
+SUDO_PLUGIN="/usr/share/zsh-sudo/sudo.plugin.zsh"
+SUDO_PLUGIN_URL="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh"
+ 
+if [ ! -f "$SUDO_PLUGIN" ]; then
     sudo mkdir -p /usr/share/zsh-sudo
-    cd /usr/share/zsh-sudo || exit 1
-    sudo wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
+    sudo wget -q -O "$SUDO_PLUGIN" "$SUDO_PLUGIN_URL"
 else
-    print_green "✔️  sudo.plugin.zsh yis alredy installed"
+    print_green "✔️  sudo.plugin.zsh ya instalado."
 fi
-
-# .zshrc para root (enlace simbólico)
-
-sudo ln -sfv ~/.zshrc /root/.zshrc
-
-# Permisos de scripts
-
-chmod +x ~/.config/bspwm/bspwmrc
-chmod +x ~/.config/bspwm/scripts/bspwm_resize
-chmod +x ~/.config/bspwm/scripts/ethernet_status.sh
-chmod +x ~/.config/bspwm/scripts/victim_to_hack.sh
-chmod +x ~/.config/bspwm/scripts/vpn_status.sh
-chmod +x ~/.config/polybar/launch.sh
-
-print_green "Changing type SHELL to Zsh"
-chsh -s $(which zsh)
-sudo chsh -s /usr/bin/zsh root
-
-
-print_green "✅ Configuration completed. The system will reboot in 5 seconds..."
-sleep 5
-sudo reboot now
+ 
+# ─────────────────────────────────────────────
+#  Permisos de scripts
+# ─────────────────────────────────────────────
+chmod +x "$HOME/.config/bspwm/bspwmrc"
+chmod +x "$HOME/.config/bspwm/scripts/bspwm_resize"
+chmod +x "$HOME/.config/bspwm/scripts/ethernet_status.sh"
+chmod +x "$HOME/.config/bspwm/scripts/victim_to_hack.sh"
+chmod +x "$HOME/.config/bspwm/scripts/vpn_status.sh"
+chmod +x "$HOME/.config/polybar/launch.sh"

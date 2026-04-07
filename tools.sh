@@ -3,7 +3,7 @@
 # =========================================
 # Instalador de herramientas de hacking
 # OS: Parrot Security
-# Autor: Javi
+# Autor: Jcreiv
 # =========================================
 
 set -e
