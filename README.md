@@ -93,7 +93,7 @@ chmod +x wallpaper.sh
 ## Purple
 ![](Wallpapers/purple.png)
 
-## S4vitar
+## Ninja
 ![](Wallpapers/s4vitar.png)
 
 ## Shortcuts & Useful Commands
@@ -219,7 +219,3 @@ This repository also includes an optional script to automate the installation of
 
 3. Follow the on-screen instructions.  
    The script will install and configure all selected tools automatically.
-
-## License
-
-This project is licensed under the MIT License.
