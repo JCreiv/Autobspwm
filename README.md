@@ -16,8 +16,6 @@
 This script has been tested on the following VMware Linux distributions:
 
 - ✅ Parrot OS
-- ✅ Kali Linux
-- ✅ Ubuntu (22.04+)
 
 It is designed for Debian-based systems. Use on other distributions may require modifications.
 
@@ -53,7 +51,7 @@ After installation, log out of your current session and choose **bspwm** as your
 
 ## Configuration
 
-- All configuration files are located in the `config/` directory:
+- All configuration files are located in the `.config/` directory:
     
     - `bspwmrc` (for bspwm)
         
