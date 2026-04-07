@@ -98,89 +98,55 @@ chmod +x wallpaper.sh
 
 ## Shortcuts & Useful Commands
 
-Here is a list of useful keyboard shortcuts and commands used in this setup:
+A quick reference guide for the keyboard shortcuts and commands used in this setup.
 
-### Window Management (bspwm + sxhkd)
+### ⌨️ Window Management (`bspwm` + `sxhkd`)
 
-1. **Super + Enter**  
-   Launch the terminal.
-
-2. **Ctrl + Super + Alt**  
-   Preselect part of the screen. Release Alt and use mouse + Ctrl + Super to resize the window.
-
-3. **Super + Shift + [1–8]**  
-   Move the current window to another workspace.
-
-4. **Super + S**  
-   Toggle floating mode for the selected window (move with Super + drag).
-
-5. **Super + Alt + Arrow keys / Shift**  
-   Resize windows in tiled mode.
-
-6. **Super + Shift + V**  
-   Launch Flameshot GUI for screenshots.
-
-7. **Super + Shift + X**  
-   Lock the screen using `i3lock-fancy`.
-
----
+| Key Combination | Action |
+| :--- | :--- |
+| `Super + Enter` | Launch the terminal. |
+| `Ctrl + Super + Alt` | Preselect part of the screen. Release `Alt` and use mouse + `Ctrl + Super` to resize the window. |
+| `Super + Shift + [1–8]` | Move the current window to another workspace. |
+| `Super + S` | Toggle floating mode for the selected window (move with `Super` + drag). |
+| `Super + Alt + Arrow Keys / Shift` | Resize windows in tiled mode. |
+| `Super + Shift + V` | Launch Flameshot GUI for screenshots. |
+| `Super + Shift + X` | Lock the screen using `i3lock-fancy`. |
 
 ### Kitty Terminal Shortcuts
 
-8. **Ctrl + Shift + Enter**  
-   Open a new `kitty` session inside the current terminal.
-
-9. **Ctrl + Shift + R**  
-   Resize the current `kitty` window.
-
-10. **Ctrl + Shift + W**  
-    Close the current `kitty` window.
-
-11. **Ctrl + Shift + T**  
-    Open a new tab in `kitty`.  
-    Rename tab: `Ctrl + Shift + Alt + T`  
-    Switch between tabs: `Ctrl + Shift + ,`, `.`
-
-12. **Ctrl + Shift + Z**  
-    Zoom the current `kitty` window (toggle).
-
-13. **Ctrl + Shift + H**  
-    Filter current output (search mode).
-
-14. **Ctrl + Shift + L**  
-    Change `kitty` keyboard layout.
-
----
+| Key Combination | Action |
+| :--- | :--- |
+| `Ctrl + Shift + Enter` | Open a new `kitty` session inside the current terminal. |
+| `Ctrl + Shift + R` | Resize the current `kitty` window. |
+| `Ctrl + Shift + W` | Close the current `kitty` window. |
+| `Ctrl + Shift + T` | Open a new tab in `kitty`. |
+| `Ctrl + Shift + Alt + T` | Rename the current tab. |
+| `Ctrl + Shift + ,` / `.` | Switch between tabs. |
+| `Ctrl + Shift + Z` | Zoom the current `kitty` window (toggle). |
+| `Ctrl + Shift + H` | Filter current output (search mode). |
+| `Ctrl + Shift + L` | Change `kitty` keyboard layout. |
 
 ### Shell Productivity (Zsh)
 
-16. **Ctrl + T**  
-    Fuzzy search for files by name.
-
-17. **Ctrl + R**  
-    Search command history.
-
-18. **Alt + .**  
-    Insert the last argument from the previous command.
-
-19. **Clear Zsh history**  
-    ```bash
-    echo ' ' > ~/.zsh_history
-    ```
-
----
+| Key Combination / Command | Action |
+| :--- | :--- |
+| `Ctrl + T` | Fuzzy search for files by name. |
+| `Ctrl + R` | Search command history. |
+| `Alt + .` | Insert the last argument from the previous command. |
+| `echo ' ' > ~/.zsh_history` | Clear Zsh history. |
 
 ### File Manager
 
-20. **Ranger**  
-    Terminal file manager included in the environment.
+| Command | Description |
+| :--- | :--- |
+| `ranger` | Launch the terminal file manager. |
 
----
+### Function Keys (Copy & Paste)
 
-### Function Keys
-
-21. **F1 + F3** → Copy  
-    **F2 + F4** → Paste
+| Key Combination | Action |
+| :--- | :--- |
+| `F1` + `F3` | Copy |
+| `F2` + `F4` | Paste |
 
 ## Tools Installation Script
 
