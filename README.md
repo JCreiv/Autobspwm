@@ -109,7 +109,7 @@ A quick reference guide for the keyboard shortcuts and commands used in this set
 | `Super + S` | Toggle floating mode for the selected window (move with `Super` + drag). |
 | `Super + left-click` | Move the floating window |
 | `Super + right-click` | Resize the floating window |
-| `Super + T` |  |
+| `Super + T` | Disable tiling mode for the terminal |
 | `Super + Alt + Arrow Keys / Shift` | Resize windows in tiled mode. |
 | `Super + Shift + V` | Launch Flameshot GUI for screenshots. |
 | `Super + Shift + X` | Lock the screen using `i3lock-fancy`. |
