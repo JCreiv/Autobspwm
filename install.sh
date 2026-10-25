@@ -283,6 +283,5 @@ fi
 chmod +x "$HOME/.config/bspwm/bspwmrc"
 chmod +x "$HOME/.config/bspwm/scripts/bspwm_resize"
 chmod +x "$HOME/.config/bspwm/scripts/ethernet_status.sh"
-chmod +x "$HOME/.config/bspwm/scripts/victim_to_hack.sh"
 chmod +x "$HOME/.config/bspwm/scripts/vpn_status.sh"
 chmod +x "$HOME/.config/polybar/launch.sh"
