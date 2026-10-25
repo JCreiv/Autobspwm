@@ -1,5 +1,5 @@
 #!/bin/bash
-# ethernet_status.sh â€” Detecta VPN activa y muestra IP + tipo
+# ethernet_status.sh — Detecta VPN activa y muestra IP + tipo
 # Para polybar: muestra "HTB: 10.10.14.x" o "OFFSEC: 192.168.x.x" o "VPN: x.x.x.x"
 
 VPN_IP=$(ip -4 addr show tun0 2>/dev/null | grep -oP '(?<=inet\s)\d+(\.\d+){3}')

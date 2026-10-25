@@ -1,10 +1,10 @@
 #!/bin/bash
-# exam_timer.sh â€” CronÃ³metro para el examen OSCP
-# Uso: exam_timer.sh start    â†’ inicia cronÃ³metro
-#      exam_timer.sh stop     â†’ para cronÃ³metro
-#      exam_timer.sh reset    â†’ resetea
-#      exam_timer.sh toggle   â†’ alterna start/stop
-#      exam_timer.sh (sin args) â†’ muestra tiempo (para polybar)
+# exam_timer.sh — Cronómetro para el examen OSCP
+# Uso: exam_timer.sh start    → inicia cronómetro
+#      exam_timer.sh stop     → para cronómetro
+#      exam_timer.sh reset    → resetea
+#      exam_timer.sh toggle   → alterna start/stop
+#      exam_timer.sh (sin args) → muestra tiempo (para polybar)
 
 TIMER_FILE="/tmp/.exam_timer"
 RUNNING_FILE="/tmp/.exam_timer_running"
@@ -21,7 +21,7 @@ case "$1" in
                 echo "$(date +%s)" > "$RUNNING_FILE"
                 echo "0" > "$TIMER_FILE"
             fi
-            notify-send "Exam Timer" "Cronometro iniciado" 2>/dev/null
+            notify-send "Exam Timer" "Cronómetro iniciado" 2>/dev/null
         fi
         ;;
     stop)
@@ -31,7 +31,7 @@ case "$1" in
             ELAPSED=$((NOW - START))
             echo "$ELAPSED" > "$TIMER_FILE"
             rm -f "$RUNNING_FILE"
-            notify-send "Exam Timer" "Cronometro pausado" 2>/dev/null
+            notify-send "Exam Timer" "Cronómetro pausado" 2>/dev/null
         fi
         ;;
     toggle)
@@ -43,10 +43,10 @@ case "$1" in
         ;;
     reset)
         rm -f "$TIMER_FILE" "$RUNNING_FILE"
-        notify-send "Exam Timer" "Cronometro reseteado" 2>/dev/null
+        notify-send "Exam Timer" "Cronómetro reseteado" 2>/dev/null
         ;;
     *)
-        # Display â€” llamado por polybar cada segundo
+        # Display — llamado por polybar cada segundo
         if [ -f "$RUNNING_FILE" ]; then
             START=$(cat "$RUNNING_FILE")
             NOW=$(date +%s)
