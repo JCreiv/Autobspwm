@@ -282,6 +282,21 @@ fi
 # ─────────────────────────────────────────────
 chmod +x "$HOME/.config/bspwm/bspwmrc"
 chmod +x "$HOME/.config/bspwm/scripts/bspwm_resize"
-chmod +x "$HOME/.config/bspwm/scripts/ethernet_status.sh"
-chmod +x "$HOME/.config/bspwm/scripts/vpn_status.sh"
+chmod +x "$HOME/.config/polybar/scripts/ethernet_status.sh"
+chmod +x "$HOME/.config/polybar/scripts/exam_timer.sh"
+chmod +x "$HOME/.config/polybar/scripts/target_display.sh"
 chmod +x "$HOME/.config/polybar/launch.sh"
+
+# ─────────────────────────────────────────────
+#  Cambio de shell a zsh
+# ─────────────────────────────────────────────
+print_green "Cambiando shell a Zsh..."
+chsh -s "$(which zsh)"
+sudo chsh -s /usr/bin/zsh root
+ 
+# ─────────────────────────────────────────────
+#  Fin
+# ─────────────────────────────────────────────
+print_green "✅ Configuración completada."
+print_yellow "⚠️  Cuando termines de verificar, ejecuta 'sudo reboot' manualmente."
+exec zsh -l
