@@ -285,6 +285,8 @@ chmod +x "$HOME/.config/bspwm/scripts/bspwm_resize"
 chmod +x "$HOME/.config/polybar/scripts/ethernet_status.sh"
 chmod +x "$HOME/.config/polybar/scripts/exam_timer.sh"
 chmod +x "$HOME/.config/polybar/scripts/target_display.sh"
+chmod +x "$HOME/.config/polybar/scripts/copy_target.sh"
+chmod +x "$HOME/.config/polybar/scripts/copy_vpn_status.sh"
 chmod +x "$HOME/.config/polybar/launch.sh"
 
 # ─────────────────────────────────────────────
